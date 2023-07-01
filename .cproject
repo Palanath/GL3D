@@ -110,7 +110,7 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="opengl-template.cdt.managedbuild.target.gnu.mingw.exe.1622735422" name="Executable" projectType="cdt.managedbuild.target.gnu.mingw.exe"/>
+		<project id="gl3d.cdt.managedbuild.target.gnu.mingw.exe.956391983" name="Executable" projectType="cdt.managedbuild.target.gnu.mingw.exe"/>
 	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
