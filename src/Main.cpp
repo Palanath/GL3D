@@ -32,9 +32,7 @@ int main() {
 	}
 
 	// OpenGL - General Setup
-	int width, height;
-	glfwGetFramebufferSize(wind, &width, &height);
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	// OpenGL - Shader Input Setup
 	GLuint vbo, vao;
