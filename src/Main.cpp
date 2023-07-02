@@ -121,7 +121,7 @@ flat in int face;
 out vec4 color;
 
 void main() {
-	color = vec4(1, face / 5., 0, 0.25);
+	color = vec4(1, face / 5., 0, 1);
 })";
 	glShaderSource(fragShader, 1, src, nullptr);
 	glCompileShader(fragShader);
