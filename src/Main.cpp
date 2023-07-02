@@ -87,26 +87,30 @@ int main() {
 	const char *src[1] =
 			{
 					R"(#version 330 core
+uniform float curtime;
 layout(location = 0) in vec3 pos;
 
 out vec3 position;
 
+mat3 zRotation(float rads) {
+	float s = sin(rads), c = cos(rads);
+	return mat3(c, -s, 0, s, c, 0, 0, 0, 1);
+}
+
 void main() {
-	gl_Position = vec4(position = pos, 1);
+	gl_Position = vec4(position = zRotation(curtime/5) * pos, 1);
 })" };
 	glShaderSource(vertShader, 1, src, nullptr);
 	glCompileShader(vertShader);
 
 	src[0] =
 			R"(#version 330 core
-uniform float curtime;
-
 in vec3 position;
 
 out vec4 color;
 
 void main() {
-	color = vec4(1, curtime / 25, 0, 1);
+	color = vec4(1, 0, 0, 1);
 })";
 	glShaderSource(fragShader, 1, src, nullptr);
 	glCompileShader(fragShader);
@@ -124,6 +128,8 @@ void main() {
 	while (!glfwWindowShouldClose(wind)) {
 		glfwPollEvents();
 		glUniform1f(curtimeUniform, glfwGetTime() - curtime);
+
+		glClear(GL_COLOR_BUFFER_BIT);
 		glDrawArrays(GL_TRIANGLES, 0, sizeof(object) / sizeof(float) / 3);
 		printGLErrors();
 		glfwSwapBuffers(wind);
