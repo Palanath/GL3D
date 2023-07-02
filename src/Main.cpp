@@ -48,6 +48,9 @@ int main() {
 
 	// OpenGL - General Setup
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+	glClearColor(0, 0, 0, 0);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// OpenGL - Shader Input Setup
 	GLuint vbo, vao;
@@ -98,8 +101,13 @@ mat3 zRotation(float rads) {
 	return mat3(c, -s, 0, s, c, 0, 0, 0, 1);
 }
 
+mat3 yRotation(float rads) {
+	float s = sin(rads), c = cos(rads);
+	return mat3(c, 0, s, 0, 1, 0, -s, 0, c);
+}
+
 void main() {
-	gl_Position = vec4(position = zRotation(curtime/5) * pos, 1);
+	gl_Position = vec4(position = yRotation(curtime/5) * pos, 1);
 	face = gl_VertexID / 3;
 })" };
 	glShaderSource(vertShader, 1, src, nullptr);
@@ -113,7 +121,7 @@ flat in int face;
 out vec4 color;
 
 void main() {
-	color = vec4(1, face / 5., 0, 1);
+	color = vec4(1, face / 5., 0, 0.25);
 })";
 	glShaderSource(fragShader, 1, src, nullptr);
 	glCompileShader(fragShader);
