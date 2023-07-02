@@ -91,6 +91,7 @@ uniform float curtime;
 layout(location = 0) in vec3 pos;
 
 out vec3 position;
+flat out int face;
 
 mat3 zRotation(float rads) {
 	float s = sin(rads), c = cos(rads);
@@ -99,6 +100,7 @@ mat3 zRotation(float rads) {
 
 void main() {
 	gl_Position = vec4(position = zRotation(curtime/5) * pos, 1);
+	face = gl_VertexID / 3;
 })" };
 	glShaderSource(vertShader, 1, src, nullptr);
 	glCompileShader(vertShader);
@@ -106,11 +108,12 @@ void main() {
 	src[0] =
 			R"(#version 330 core
 in vec3 position;
+flat in int face;
 
 out vec4 color;
 
 void main() {
-	color = vec4(1, 0, 0, 1);
+	color = vec4(1, face / 5., 0, 1);
 })";
 	glShaderSource(fragShader, 1, src, nullptr);
 	glCompileShader(fragShader);
