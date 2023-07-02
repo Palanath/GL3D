@@ -53,7 +53,27 @@ int main() {
 	GLuint vbo, vao;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	float object[] = { -1, 1, -1, 1, 1, -1, 0, -1, -1 };
+	float object[] = {
+				-.5, .5, 0,
+				-.5, .5, 1,
+				.5, .5, 0,
+
+				.5, .5, 0,
+				-.5, .5, 1,
+				.5, .5, 1,
+
+				-.5, .5, 0,
+				0, -.5, .5,
+				.5, .5, 0,
+
+				-.5, .5, 1,
+				0, -.5, .5,
+				-.5, .5, 0,
+
+				.5, .5, 1,
+				0, -.5, .5,
+				-.5, .5, 1,
+		};
 	glBufferData(GL_ARRAY_BUFFER, sizeof object, object, GL_STATIC_DRAW);
 
 	glGenVertexArrays(1, &vao);
