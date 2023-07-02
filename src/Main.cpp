@@ -99,12 +99,14 @@ void main() {
 
 	src[0] =
 			R"(#version 330 core
+uniform float curtime;
+
 in vec3 position;
 
 out vec4 color;
 
 void main() {
-	color = vec4(1, 0, 0, 1);
+	color = vec4(1, curtime / 25, 0, 1);
 })";
 	glShaderSource(fragShader, 1, src, nullptr);
 	glCompileShader(fragShader);
@@ -115,9 +117,13 @@ void main() {
 	glLinkProgram(shader);
 	glUseProgram(shader);
 
+	GLuint curtimeUniform = glGetUniformLocation(shader, "curtime");
+
 	// Render loop
+	double curtime = glfwGetTime();
 	while (!glfwWindowShouldClose(wind)) {
 		glfwPollEvents();
+		glUniform1f(curtimeUniform, glfwGetTime() - curtime);
 		glDrawArrays(GL_TRIANGLES, 0, sizeof(object) / sizeof(float) / 3);
 		printGLErrors();
 		glfwSwapBuffers(wind);
