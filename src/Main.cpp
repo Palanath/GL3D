@@ -58,36 +58,39 @@ int main() {
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	float object[] = {
-				-.5, .5, 0,
-				-.5, .5, 1,
-				.5, .5, 0,
+				-.5, .5, 0, 1, 0, 0,
+				-.5, .5, 1, 0, 1, 0,
+				.5, .5, 0,  0, 0, 1,
 
-				.5, .5, 0,
-				-.5, .5, 1,
-				.5, .5, 1,
+				.5, .5, 0,  0, 0, 1,
+				-.5, .5, 1, 0, 1, 0,
+				.5, .5, 1,  1, 1, 0,
 
-				-.5, .5, 0,
-				0, -.5, .5,
-				.5, .5, 0,
+				-.5, .5, 0, 1, 0, 0,
+				0, -.5, .5, 1, 1, 1,
+				.5, .5, 0,  0, 0, 1,
 
-				-.5, .5, 1,
-				0, -.5, .5,
-				-.5, .5, 0,
+				-.5, .5, 1, 0, 1, 0,
+				0, -.5, .5, 1, 1, 1,
+				-.5, .5, 0, 1, 0, 0,
 
-				.5, .5, 1,
-				0, -.5, .5,
-				-.5, .5, 1,
+				.5, .5, 1,  1, 1, 0,
+				0, -.5, .5, 1, 1, 1,
+				-.5, .5, 1, 0, 1, 0,
 
-				.5, .5, 0,
-				0, -.5, .5,
-				.5, .5, 1
+				.5, .5, 0,  0, 0, 1,
+				0, -.5, .5, 1, 1, 1,
+				.5, .5, 1,  1, 1, 0
 		};
 	glBufferData(GL_ARRAY_BUFFER, sizeof object, object, GL_STATIC_DRAW);
 
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
-	glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 6, (void*) 0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, false, sizeof(float) * 6,
+			(void*) (sizeof(float) * 3));
 	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
 
 	// OpenGL - Shader Setup
 	GLuint vertShader = glCreateShader(GL_VERTEX_SHADER), fragShader =
@@ -97,9 +100,10 @@ int main() {
 					R"(#version 330 core
 uniform float curtime;
 layout(location = 0) in vec3 pos;
+layout(location = 1) in vec3 vertColor;
 
 out vec3 position;
-out float face;
+out vec3 pointColor;
 
 mat3 zRotation(float rads) {
 	float s = sin(rads), c = cos(rads);
@@ -113,7 +117,7 @@ mat3 yRotation(float rads) {
 
 void main() {
 	gl_Position = vec4(position = yRotation(curtime/5) * zRotation(curtime/5) * pos, 1);
-	face = gl_VertexID;
+	pointColor = vertColor;
 })" };
 	glShaderSource(vertShader, 1, src, nullptr);
 	glCompileShader(vertShader);
@@ -121,12 +125,12 @@ void main() {
 	src[0] =
 			R"(#version 330 core
 in vec3 position;
-in float face;
+in vec3 pointColor;
 
 out vec4 color;
 
 void main() {
-	color = vec4(1, mod(face, 1.), 0, 1);
+	color = vec4(pointColor.rgb, 1);
 })";
 	glShaderSource(fragShader, 1, src, nullptr);
 	glCompileShader(fragShader);
