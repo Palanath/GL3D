@@ -134,6 +134,7 @@ void main() {
 uniform vec3 lightloc;
 uniform vec3 lightColor;
 uniform vec3 ambientLightColor;
+uniform vec3 lightAttenuation;
 
 in vec3 position;
 in vec3 pointColor;
@@ -142,13 +143,16 @@ in vec3 normalVector;
 out vec4 color;
 
 void main() {
-	const float materialAmbientReflectivity = 0.03;
+	const float materialAmbientReflectivity = 0.08;
 
 	vec3 pointToLightVector = lightloc - position;
+	float lightSourceDistance = length(pointToLightVector);
 
 	vec3 ambientTerm = materialAmbientReflectivity * ambientLightColor;
+
+	float attenuation = 1 / (lightAttenuation.x + lightAttenuation.y * lightSourceDistance + lightAttenuation.z * lightSourceDistance * lightSourceDistance);
 	float diffuseDotProd = dot(normalize(pointToLightVector), normalize(normalVector));
-	vec3 diffuseTerm = diffuseDotProd < 0 ? vec3(0,0,0) : pointColor * diffuseDotProd * lightColor;
+	vec3 diffuseTerm = diffuseDotProd < 0 ? vec3(0,0,0) : pointColor * diffuseDotProd * lightColor * attenuation;
 	color = vec4(ambientTerm + diffuseTerm, 1);
 })";
 	glShaderSource(fragShader, 1, src, nullptr);
@@ -163,7 +167,8 @@ void main() {
 	GLuint curtimeUniform = glGetUniformLocation(shader, "curtime");
 	glUniform3f(glGetUniformLocation(shader, "lightloc"), .8, .3, .25);
 	glUniform3f(glGetUniformLocation(shader, "lightColor"), 1, 1, 1);
-	glUniform3f(glGetUniformLocation(shader, "ambientLightColor"), 1, .7, 0);
+	glUniform3f(glGetUniformLocation(shader, "ambientLightColor"), 1, 1, 1);
+	glUniform3f(glGetUniformLocation(shader, "lightAttenuation"), 0, 1, 2.5);
 
 	// Render loop
 	double curtime = glfwGetTime();
