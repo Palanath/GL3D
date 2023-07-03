@@ -77,6 +77,10 @@ int main() {
 				.5, .5, 1,
 				0, -.5, .5,
 				-.5, .5, 1,
+
+				.5, .5, 0,
+				0, -.5, .5,
+				.5, .5, 1
 		};
 	glBufferData(GL_ARRAY_BUFFER, sizeof object, object, GL_STATIC_DRAW);
 
