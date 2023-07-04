@@ -7,17 +7,18 @@
 
 #ifndef MODEL_H_
 #define MODEL_H_
+#include "ModelGroup.h"
 
 namespace gl3d {
 
 class Model {
 	GLuint vbo;
-
+	class ModelGroup* owner;
 public:
-	Model(float*, int);
+	Model(ModelGroup*, float[], int);
 	virtual ~Model();
 };
 
 } /* namespace gl3d */
 
-#endif /* GPUMODEL_H_ */
+#endif /* MODEL_H_ */

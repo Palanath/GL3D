@@ -1,7 +1,7 @@
 #include "ModelGroup.h"
 
 /*
- * GPUModelGroup.cpp
+ * ModelGroup.cpp
  *
  *  Created on: Jul 4, 2023
  *      Author: Palanath
@@ -77,6 +77,10 @@ ModelGroup::~ModelGroup() {
 	glDetachShader(shader, fragShader);
 	glDeleteShader(fragShader);
 	glDeleteProgram(shader);
+}
+
+class Model* ModelGroup::createModel(float data[], int length) {
+	return new Model(this, data, length);
 }
 
 } /* namespace gl3d */

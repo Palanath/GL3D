@@ -5,18 +5,18 @@
  *      Author: Palanath
  */
 
-#ifndef GPUMODELGROUP_H_
+#ifndef MODELGROUP_H_
 #define MODELGROUP_H_
 
 #include "Model.h"
-
 
 namespace gl3d {
 
 class ModelGroup {
 	GLuint vao, vertShader, fragShader, shader;
 public:
-	ModelGroup(const char* vertexShaderSource, const char* fragmentShaderSource);
+	ModelGroup(const char *vertexShaderSource,
+			const char *fragmentShaderSource);
 	virtual ~ModelGroup();
 	GLuint getUniformLoc(const char*);
 	template<typename T>
@@ -28,4 +28,4 @@ public:
 
 } /* namespace gl3d */
 
-#endif /* GPUMODELGROUP_H_ */
+#endif /* MODELGROUP_H_ */

@@ -1,4 +1,5 @@
 #include "Model.h"
+#include "ModelGroup.h"
 
 
 /*
@@ -17,13 +18,15 @@ namespace gl3d {
  *
  * The array can represent any number of vertices, but the length (len) must be divisible by 9.
  */
-Model::Model(float *data, int len) {
+Model::Model(ModelGroup* parent, float *data, int len) {
+	owner = parent;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * len, data, GL_STATIC_DRAW);
 }
 
 Model::~Model() {
+	glDeleteBuffers(1, &vbo);
 }
 
 } /* namespace gl3d */
