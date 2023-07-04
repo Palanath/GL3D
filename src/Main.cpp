@@ -177,7 +177,7 @@ void main() {
 		glUniform1f(curtimeUniform, glfwGetTime() - curtime);
 
 		glClear(GL_COLOR_BUFFER_BIT);
-		glDrawArrays(GL_TRIANGLES, 0, sizeof(object) / sizeof(float) / 3);
+		glDrawArrays(GL_TRIANGLES, 0, sizeof(object) / sizeof(float) / 9);// 9 floats per vertex.
 		printGLErrors();
 		glfwSwapBuffers(wind);
 	}
