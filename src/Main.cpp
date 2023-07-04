@@ -130,15 +130,15 @@ int main() {
 	};
 	gl3d::Model model(&group, object, sizeof(object) / sizeof(float));
 
+	// Prepare for shader setup and rendering.
+	group.bind();
+
 	// OpenGL - Shader Setup
 	GLuint curtimeUniform = group.getUniformLoc("curtime");
 	glUniform3f(group.getUniformLoc("lightloc"), .8, .3, .25);
 	glUniform3f(group.getUniformLoc("lightColor"), 1, 1, 1);
 	glUniform3f(group.getUniformLoc("ambientLightColor"), 1, 1, 1);
 	glUniform3f(group.getUniformLoc("lightAttenuation"), 0, 1, 2.5);
-
-	// Prepare for render loop
-	group.prepareForRender();
 
 	// Render loop
 	double curtime = glfwGetTime();

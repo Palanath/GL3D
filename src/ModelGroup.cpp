@@ -32,6 +32,10 @@ ModelGroup::ModelGroup(const char *vertexShaderSource,
 	glLinkProgram(shader);
 }
 
+/*
+ * Returns the location of the uniform with the provided name.
+ * To assign to the uniform, first ModelGroup::bind() should be invoked so that the associated program object is bound.
+ */
 GLuint ModelGroup::getUniformLoc(const char *name) {
 	return glGetUniformLocation(shader, name);
 }
@@ -72,9 +76,12 @@ ModelGroup::~ModelGroup() {
 	glDeleteProgram(shader);
 }
 
-void ModelGroup::prepareForRender() {
+/*
+ * Binds the associated VAO and uses the associated program. This should be called when e.g. setting uniform values or before rendering.
+ */
+void ModelGroup::bind() {
 	glBindVertexArray(vao);
-	glUseProgram(vao);
+	glUseProgram(shader);
 }
 
 void ModelGroup::configureModel(Model &model) {

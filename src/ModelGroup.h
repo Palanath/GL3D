@@ -30,7 +30,7 @@ public:
 	 *
 	 * This member function binds the vertex array associated with this ModelGroup and Uses the shader program associated with this group as well.
 	 */
-	void prepareForRender();
+	void bind();
 };
 
 } /* namespace gl3d */

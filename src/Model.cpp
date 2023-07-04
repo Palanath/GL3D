@@ -37,7 +37,7 @@ Model::Model(ModelGroup *parent, float *data, int len) {
  * However, if many Models of the same group are to be rendered in sequence, overhead calls can be avoided by invoking the ModelGroup's prepareForRender() member function once, and then calling the draw() member function on each model in sequence.
  */
 void Model::render() {
-	owner->prepareForRender();
+	owner->bind();
 	draw();
 }
 
