@@ -14,6 +14,7 @@ namespace gl3d {
 
 class ModelGroup {
 	GLuint vao, vertShader, fragShader, shader;
+	friend class Model;
 public:
 	ModelGroup(const char *vertexShaderSource,
 			const char *fragmentShaderSource);

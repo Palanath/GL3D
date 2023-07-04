@@ -20,9 +20,18 @@ namespace gl3d {
  */
 Model::Model(ModelGroup* parent, float *data, int len) {
 	owner = parent;
+	verts = len / 9;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * len, data, GL_STATIC_DRAW);
+}
+
+void Model::render() {
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindVertexArray(owner->vao);
+	glUseProgram(owner->vao);
+
+	glDrawArrays(GL_TRIANGLES, 0, verts);
 }
 
 Model::~Model() {

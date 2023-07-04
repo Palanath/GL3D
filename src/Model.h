@@ -14,8 +14,10 @@ namespace gl3d {
 class Model {
 	GLuint vbo;
 	class ModelGroup* owner;
+	int verts;
 public:
 	Model(ModelGroup*, float[], int);
+	void render();
 	virtual ~Model();
 };
 
