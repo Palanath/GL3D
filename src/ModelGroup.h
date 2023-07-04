@@ -6,7 +6,10 @@
  */
 
 #ifndef GPUMODELGROUP_H_
-#define GPUMODELGROUP_H_a
+#define MODELGROUP_H_
+
+#include "Model.h"
+
 
 namespace gl3d {
 
@@ -20,6 +23,7 @@ public:
 	void setUniform(const char *uniformName, const T &value);
 	template<typename T, int len>
 	void setUniform(const char *uniformName, T value[len]);
+	class Model* createModel(float data[], int length);
 };
 
 } /* namespace gl3d */
