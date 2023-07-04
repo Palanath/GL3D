@@ -11,11 +11,13 @@
 namespace gl3d {
 
 class Model {
+	GLuint vbo;
+
 public:
-	Model();
+	Model(float*, int);
 	virtual ~Model();
 };
 
 } /* namespace gl3d */
 
-#endif /* MODEL_H_ */
+#endif /* GPUMODEL_H_ */
