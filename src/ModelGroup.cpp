@@ -83,4 +83,9 @@ class Model* ModelGroup::createModel(float data[], int length) {
 	return new Model(this, data, length);
 }
 
+void ModelGroup::prepareForRender() {
+	glBindVertexArray(vao);
+	glUseProgram(vao);
+}
+
 } /* namespace gl3d */

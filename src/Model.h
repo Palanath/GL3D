@@ -18,6 +18,7 @@ class Model {
 public:
 	Model(ModelGroup*, float[], int);
 	void render();
+	void draw();
 	virtual ~Model();
 };
 

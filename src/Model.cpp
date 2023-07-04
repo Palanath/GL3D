@@ -1,7 +1,6 @@
 #include "Model.h"
 #include "ModelGroup.h"
 
-
 /*
  * Model.cpp
  *
@@ -18,7 +17,7 @@ namespace gl3d {
  *
  * The array can represent any number of vertices, but the length (len) must be divisible by 9.
  */
-Model::Model(ModelGroup* parent, float *data, int len) {
+Model::Model(ModelGroup *parent, float *data, int len) {
 	owner = parent;
 	verts = len / 9;
 	glGenBuffers(1, &vbo);
@@ -26,11 +25,26 @@ Model::Model(ModelGroup* parent, float *data, int len) {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * len, data, GL_STATIC_DRAW);
 }
 
+/*
+ * Prepares to draw this model, then draws it.
+ *
+ * This member function calls this Model's owning ModelGroup's prepareForRender() member function, which sets up the VAO and Shader Program, for the model group, to be used.
+ * Then this function calls Model::draw(), which binds the VBO and draws the associated vertices.
+ *
+ * This function is a convenience function used to render this Model without rendering others in the same group.
+ * It sets up the VAO and shader program through the owning ModelGroup for that reason.
+ * However, if many Models of the same group are to be rendered in sequence, overhead calls can be avoided by invoking the ModelGroup's prepareForRender() member function once, and then calling the draw() member function on each model in sequence.
+ */
 void Model::render() {
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBindVertexArray(owner->vao);
-	glUseProgram(owner->vao);
+	owner->prepareForRender();
+	draw();
+}
 
+/*
+ * Draws this Model, assuming that the ModelGroup it belongs to is currently the active group being rendered (in that ModelGroup::prepareForRender() has been called to set the vertex array and program it contains as active).
+ */
+void Model::draw() {
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glDrawArrays(GL_TRIANGLES, 0, verts);
 }
 
