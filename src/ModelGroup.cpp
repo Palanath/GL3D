@@ -26,8 +26,10 @@ ModelGroup::ModelGroup(const char *vertexShaderSource,
 
 	vertShader = glCreateShader(GL_VERTEX_SHADER);
 	fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(vertShader, 1, vertexShaderSource, nullptr);
-	glShaderSource(fragShader, 1, fragmentShaderSource, nullptr);
+	const char *src[1] = { vertexShaderSource };
+	glShaderSource(vertShader, 1, src, nullptr);
+	src[0] = fragmentShaderSource;
+	glShaderSource(fragShader, 1, src, nullptr);
 	glCompileShader(vertShader);
 	glCompileShader(fragShader);
 
@@ -70,7 +72,11 @@ void ModelGroup::setUniform(const char *uniformName, T value[len]) {
 }
 
 ModelGroup::~ModelGroup() {
-	// TODO Auto-generated destructor stub
+	glDetachShader(shader, vertShader);
+	glDeleteShader(vertShader);
+	glDetachShader(shader, fragShader);
+	glDeleteShader(fragShader);
+	glDeleteProgram(shader);
 }
 
 } /* namespace gl3d */
