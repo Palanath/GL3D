@@ -12,6 +12,7 @@
 namespace gl3d {
 
 class Model {
+	friend class ModelGroup;
 	GLuint vbo;
 	class ModelGroup* owner;
 	int verts;

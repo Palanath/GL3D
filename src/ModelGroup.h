@@ -13,7 +13,9 @@
 namespace gl3d {
 
 class ModelGroup {
+	friend class Model;
 	GLuint vao, vertShader, fragShader, shader;
+	void configureModel(class Model& model);
 public:
 	ModelGroup(const char *vertexShaderSource,
 			const char *fragmentShaderSource);
@@ -23,7 +25,6 @@ public:
 	void setUniform(const char *uniformName, const T &value);
 	template<typename T, int len>
 	void setUniform(const char *uniformName, T value[len]);
-	class Model* createModel(float data[], int length);
 	/*
 	 * Calls relevant OpenGL functions to prepare for rendering one of the Models belonging to this group.
 	 *

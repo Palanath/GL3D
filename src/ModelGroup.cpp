@@ -8,21 +8,14 @@
  */
 
 #include <type_traits>
+#include <iostream>
+#include "Utils.h"
 
 namespace gl3d {
 
 ModelGroup::ModelGroup(const char *vertexShaderSource,
 		const char *fragmentShaderSource) {
 	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-	glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 9, (void*) 0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, false, sizeof(float) * 9,
-			(void*) (sizeof(float) * 3));
-	glVertexAttribPointer(2, 3, GL_FLOAT, false, sizeof(float) * 9,
-			(void*) (sizeof(float) * 3));
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
 
 	vertShader = glCreateShader(GL_VERTEX_SHADER);
 	fragShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -60,7 +53,7 @@ void ModelGroup::setUniform(const char *uniformName, T value[len]) {
 		else if constexpr (len == 3)
 			glUniform3i(getUniformLoc(uniformName), value[0], value[1],
 					value[2]);
-	} else if constexpr (std::is_same_v<T, float>) {
+	} else if constexpr (std::is_same_v<T, float>)
 		if constexpr (len == 1)
 			glUniform1f(getUniformLoc(uniformName), value[0]);
 		else if constexpr (len == 2)
@@ -68,7 +61,7 @@ void ModelGroup::setUniform(const char *uniformName, T value[len]) {
 		else if constexpr (len == 3)
 			glUniform3f(getUniformLoc(uniformName), value[0], value[1],
 					value[2]);
-	}
+
 }
 
 ModelGroup::~ModelGroup() {
@@ -82,6 +75,19 @@ ModelGroup::~ModelGroup() {
 void ModelGroup::prepareForRender() {
 	glBindVertexArray(vao);
 	glUseProgram(vao);
+}
+
+void ModelGroup::configureModel(Model &model) {
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, model.vbo);
+	glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 9, (void*) 0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, false, sizeof(float) * 9,
+			(void*) (sizeof(float) * 3));
+	glVertexAttribPointer(2, 3, GL_FLOAT, false, sizeof(float) * 9,
+			(void*) (sizeof(float) * 3));
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
 }
 
 } /* namespace gl3d */

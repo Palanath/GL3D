@@ -23,6 +23,7 @@ Model::Model(ModelGroup *parent, float *data, int len) {
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * len, data, GL_STATIC_DRAW);
+	parent->configureModel(*this);
 }
 
 /*

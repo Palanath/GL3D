@@ -148,7 +148,6 @@ int main() {
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		model.draw();
-		gl3d::utils::printGLErrors();
 		glfwSwapBuffers(wind);
 	}
 
