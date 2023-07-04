@@ -11,6 +11,32 @@
 
 namespace gl3d {
 
+ModelGroup::ModelGroup(const char *vertexShaderSource,
+		const char *fragmentShaderSource) {
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+	glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 9, (void*) 0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, false, sizeof(float) * 9,
+			(void*) (sizeof(float) * 3));
+	glVertexAttribPointer(2, 3, GL_FLOAT, false, sizeof(float) * 9,
+			(void*) (sizeof(float) * 3));
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+
+	vertShader = glCreateShader(GL_VERTEX_SHADER);
+	fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(vertShader, 1, vertexShaderSource, nullptr);
+	glShaderSource(fragShader, 1, fragmentShaderSource, nullptr);
+	glCompileShader(vertShader);
+	glCompileShader(fragShader);
+
+	shader = glCreateProgram();
+	glAttachShader(shader, vertShader);
+	glAttachShader(shader, fragShader);
+	glLinkProgram(shader);
+}
+
 GLuint ModelGroup::getUniformLoc(const char *name) {
 	return glGetUniformLocation(shader, name);
 }
@@ -41,11 +67,6 @@ void ModelGroup::setUniform(const char *uniformName, T value[len]) {
 			glUniform3f(getUniformLoc(uniformName), value[0], value[1],
 					value[2]);
 	}
-}
-
-ModelGroup::ModelGroup() {
-	// TODO Auto-generated constructor stub
-
 }
 
 ModelGroup::~ModelGroup() {

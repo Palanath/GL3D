@@ -13,7 +13,7 @@ namespace gl3d {
 class ModelGroup {
 	GLuint vao, vertShader, fragShader, shader;
 public:
-	ModelGroup();
+	ModelGroup(const char* vertexShaderSource, const char* fragmentShaderSource);
 	virtual ~ModelGroup();
 	GLuint getUniformLoc(const char*);
 	template<typename T>
