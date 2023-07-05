@@ -10,8 +10,6 @@
 
 namespace gl3d {
 
-// TODO Make ModelGroup-style class that contains a VAO and shader for rendering. Instances should have methods to create Models, each of which access the group's vao and shader.
-
 /*
  * Creates a new GPUModel object with the provided data array and properties. The data array should contain 9 floats per vertex. The first three floats are the coordinate point of the vertex. The second three are the vertex's color value. The last three are the vertex's normal vector (which does not have to be normalized).
  *
@@ -23,7 +21,6 @@ Model::Model(ModelGroup *parent, float *data, int len) {
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * len, data, GL_STATIC_DRAW);
-	parent->configureModel(*this);
 }
 
 /*
@@ -45,7 +42,9 @@ void Model::render() {
  * Draws this Model, assuming that the ModelGroup it belongs to is currently the active group being rendered (in that ModelGroup::prepareForRender() has been called to set the vertex array and program it contains as active).
  */
 void Model::draw() {
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindVertexBuffer(0, vbo, 0, sizeof(float) * 9);
+	glBindVertexBuffer(1, vbo, sizeof(float) * 3, sizeof(float) * 9);
+	glBindVertexBuffer(2, vbo, sizeof(float) * 6, sizeof(float) * 9);
 	glDrawArrays(GL_TRIANGLES, 0, verts);
 }
 

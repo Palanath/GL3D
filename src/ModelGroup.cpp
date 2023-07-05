@@ -16,6 +16,17 @@ namespace gl3d {
 ModelGroup::ModelGroup(const char *vertexShaderSource,
 		const char *fragmentShaderSource) {
 	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	glVertexAttribFormat(0, 3, GL_FLOAT, false, 0);
+	glVertexAttribFormat(1, 3, GL_FLOAT, false, 0);
+	glVertexAttribFormat(2, 3, GL_FLOAT, false, 0);
+	glVertexAttribBinding(0, 0);
+	glVertexAttribBinding(1, 1);
+	glVertexAttribBinding(2, 2);
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
 
 	vertShader = glCreateShader(GL_VERTEX_SHADER);
 	fragShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -69,6 +80,7 @@ void ModelGroup::setUniform(const char *uniformName, T value[len]) {
 }
 
 ModelGroup::~ModelGroup() {
+	glDeleteVertexArrays(1, &vao);
 	glDetachShader(shader, vertShader);
 	glDeleteShader(vertShader);
 	glDetachShader(shader, fragShader);
@@ -82,19 +94,6 @@ ModelGroup::~ModelGroup() {
 void ModelGroup::bind() {
 	glBindVertexArray(vao);
 	glUseProgram(shader);
-}
-
-void ModelGroup::configureModel(Model &model) {
-	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, model.vbo);
-	glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 9, (void*) 0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, false, sizeof(float) * 9,
-			(void*) (sizeof(float) * 3));
-	glVertexAttribPointer(2, 3, GL_FLOAT, false, sizeof(float) * 9,
-			(void*) (sizeof(float) * 3));
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
 }
 
 } /* namespace gl3d */

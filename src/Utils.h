@@ -13,6 +13,7 @@
 namespace gl3d::utils {
 
 void printGLErrors();
+void setupGLDebugging();
 
 }  // namespace gl3d::utils
 

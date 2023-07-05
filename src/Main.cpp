@@ -44,6 +44,7 @@ int main() {
 		return 0;
 	}
 	glfwSetWindowSizeCallback(wind, glfwWindowResizeCallback);
+	gl3d::utils::setupGLDebugging();
 
 	// OpenGL - General Setup
 	glfwWindowResizeCallback(wind, 0, 0);
@@ -128,6 +129,13 @@ int main() {
 			0, -.5, .5,   1, 0, 0,   0, .5, 1,
 			.5, .5, 1,    1, 0, 0,   0, .5, 1
 	};
+	float obj2[] = {
+			-.5, .5, 1,   1, 1, 0,   0, -1, 0,
+			-.5, .5, 2,   1, 1, 0,   0, -1, 0,
+			.5, .5, 1,    1, 1, 0,   0, -1, 0,
+	};
+	std::cout << sizeof(obj2);
+	gl3d::Model m2(&group, obj2, sizeof(obj2) / sizeof(float));
 	gl3d::Model model(&group, object, sizeof(object) / sizeof(float));
 
 	// Prepare for shader setup and rendering.
@@ -135,10 +143,10 @@ int main() {
 
 	// OpenGL - Shader Setup
 	GLuint curtimeUniform = group.getUniformLoc("curtime");
-	glUniform3f(group.getUniformLoc("lightloc"), .8, .3, .25);
+	glUniform3f(group.getUniformLoc("lightloc"), 0, 0, 0);
 	glUniform3f(group.getUniformLoc("lightColor"), 1, 1, 1);
 	glUniform3f(group.getUniformLoc("ambientLightColor"), 1, 1, 1);
-	glUniform3f(group.getUniformLoc("lightAttenuation"), 0, 1, 2.5);
+	glUniform3f(group.getUniformLoc("lightAttenuation"), 1.2, 0.1, 0.1);
 
 	// Render loop
 	double curtime = glfwGetTime();
@@ -148,6 +156,7 @@ int main() {
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		model.draw();
+		m2.draw();
 		glfwSwapBuffers(wind);
 	}
 
