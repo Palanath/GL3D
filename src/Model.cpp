@@ -15,7 +15,7 @@ namespace gl3d {
  *
  * The array can represent any number of vertices, but the length (len) must be divisible by 9.
  */
-Model::Model(ModelGroup *parent, float *data, int len) {
+Model::Model(ModelGroup *parent, const float *data, int len) {
 	owner = parent;
 	verts = len / 9;
 	glGenBuffers(1, &vbo);

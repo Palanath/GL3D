@@ -3,6 +3,8 @@
 #include "ModelGroup.h"
 #include "Model.h"
 #include "Utils.h"
+#include "models/WallMG.h"
+#include "models/WallModel.h"
 
 #define WINDOW_WIDTH 1400
 #define WINDOW_HEIGHT 800
@@ -134,9 +136,11 @@ int main() {
 			-.5, .5, 2,   1, 1, 0,   0, -1, 0,
 			.5, .5, 1,    1, 1, 0,   0, -1, 0,
 	};
-	std::cout << sizeof(obj2);
 	gl3d::Model m2(&group, obj2, sizeof(obj2) / sizeof(float));
 	gl3d::Model model(&group, object, sizeof(object) / sizeof(float));
+
+	gl3d::models::WallMG wallg;
+	gl3d::models::WallModel wall(&wallg);
 
 	// Prepare for shader setup and rendering.
 	group.bind();
@@ -148,15 +152,25 @@ int main() {
 	glUniform3f(group.getUniformLoc("ambientLightColor"), 1, 1, 1);
 	glUniform3f(group.getUniformLoc("lightAttenuation"), 1.2, 0.1, 0.1);
 
+	wallg.bind();
+	glUniform3f(wallg.getUniformLoc("lightloc"), 0, 0, 0);
+	glUniform3f(wallg.getUniformLoc("lightColor"), 1, 1, 1);
+	glUniform3f(wallg.getUniformLoc("ambientLightColor"), 1, 1, 1);
+	glUniform3f(wallg.getUniformLoc("lightAttenuation"), 1.2, 0.1, 0.1);
+
 	// Render loop
 	double curtime = glfwGetTime();
 	while (!glfwWindowShouldClose(wind)) {
 		glfwPollEvents();
+		group.bind();
 		glUniform1f(curtimeUniform, glfwGetTime() - curtime);
 
 		glClear(GL_COLOR_BUFFER_BIT);
-		model.draw();
 		m2.draw();
+		model.draw();
+
+		wallg.bind();
+		wall.draw();
 		glfwSwapBuffers(wind);
 	}
 

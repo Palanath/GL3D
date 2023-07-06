@@ -17,7 +17,7 @@ class Model {
 	class ModelGroup* owner;
 	int verts;
 public:
-	Model(ModelGroup*, float[], int);
+	Model(ModelGroup*, const float[], int);
 	void render();
 	void draw();
 	virtual ~Model();

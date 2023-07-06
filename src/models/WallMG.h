@@ -8,6 +8,7 @@
 #ifndef MODELS_WALLMG_H_
 #define MODELS_WALLMG_H_
 
+#include "../Model.h"
 #include "../ModelGroup.h"
 
 namespace gl3d::models {
